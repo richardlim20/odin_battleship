@@ -53,4 +53,5 @@ class Gameboard {
   }
 }
 
-module.exports = Gameboard;
+// module.exports = Gameboard;
+export default Gameboard;

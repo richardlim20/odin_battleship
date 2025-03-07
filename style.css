@@ -1,0 +1,26 @@
+#games-container {
+  display: flex;
+  justify-content: space-around;
+}
+h1 {
+  text-align: center;
+}
+.gameboard{
+  display: grid;
+  grid-template-columns: 1fr repeat(9, 1fr);
+}
+
+.row {
+  height: 50px;
+  width: 50px;
+}
+
+.column {
+  border: 1px solid;
+  height: 50px;
+  width: 50px;
+}
+
+#games-container > div {
+  text-align: center;
+}
