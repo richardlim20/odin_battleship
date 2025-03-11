@@ -1,23 +1,42 @@
 import Gameboard from "./gameboard.js";
-class Player {
-  constructor(){
-    this.gameboard = new Gameboard();
-    this.coordinates = [[1,2],[2,2],[3,2]];
-  }
+import Ship from "./ship.js";
 
+let carrier = new Ship(5);
+let battleship = new Ship(4);
+let cruiser = new Ship(3);
+let submarine = new Ship(3);
+let destroyer = new Ship(2);
+class Player {
+  constructor() {
+    this.gameboard = new Gameboard();
+  }
 }
+
+//Player object
+let player = new Player();
+const playerGameboard = player.gameboard;
+const playerShips = player.gameboard.ships;
+player.gameboard.placeShip(carrier, "horizontal", [0, 0]);
+player.gameboard.placeShip(battleship, "vertical", [9, 5]);
+player.gameboard.placeShip(cruiser, "horizontal", [1, 2]);
+
+//Opponent Object
+let opponent = new Player();
+const opponentGameboard = opponent.gameboard;
+const opponentShips = opponent.gameboard.ships;
+opponent.gameboard.placeShip(carrier, "horizontal", [0, 0]);
+opponent.gameboard.placeShip(battleship, "vertical", [9, 5]);
+opponent.gameboard.placeShip(cruiser, "horizontal", [1, 2]);
 
 const gamesContainer = document.getElementById("games-container");
 const playerBoard = document.createElement("div");
 playerBoard.classList.add("gameboard");
-playerBoard.dataset.board = "player-board"
+playerBoard.dataset.board = "player-board";
 const opponentBoard = document.createElement("div");
 opponentBoard.classList.add("gameboard");
-opponentBoard.dataset.board = "opponent-board"
+opponentBoard.dataset.board = "opponent-board";
 const column = document.createElement("div");
 column.classList.add("column");
-const row = document.createElement("div");
-row.classList.add("row");
 const playerContainer = document.getElementById("player-container");
 const opponnentContainer = document.getElementById("opponent-container");
 gamesContainer.appendChild(playerContainer);
@@ -25,32 +44,43 @@ gamesContainer.appendChild(opponnentContainer);
 
 const createBoards = () => {
   appendBoards();
-  createRows(playerBoard);
-  createRows(opponentBoard);
-  createColumns();
+  createRows(playerBoard, "player");
+  createRows(opponentBoard, "opponent");
+  createColumns("player", playerShips);
+  createColumns("opponent", opponentShips);
 };
 
-const createRows = (board) => {
+const createRows = (board, boardName) => {
   for (let i = 0; i < 10; i++) {
+    const row = document.createElement("div");
+    row.classList.add(boardName);
     board.appendChild(row.cloneNode(true));
   }
 };
 
-const createColumns = () => {
-  const rows = document.querySelectorAll(".row");
+const createColumns = (boardName, boardShips) => {
+  const rows = document.querySelectorAll(`.${boardName}`);
   let rowNum = 0;
+
   rows.forEach((row) => {
-    row.addEventListener("click", (e) => {
-      console.log(e.target)
-    })
     for (let i = 0; i < 10; i++) {
-      column.dataset.coordinate = [rowNum, i]
-      row.appendChild(column.cloneNode(true));
+      const column = document.createElement("div");
+      column.classList.add("column");
+      column.dataset.coordinate = JSON.stringify([rowNum, i]);
+
+      boardShips.forEach((ship) => {
+        ship.coordinates.forEach((coordinate) => {
+          if (JSON.stringify(coordinate) === column.dataset.coordinate) {
+            //Shows own ships but not opponent ships
+            boardName === "opponent"
+              ? (column.textContent = "")
+              : (column.textContent = "ship");
+          }
+        });
+      });
+      row.appendChild(column);
     }
-    rowNum++
-    if (rowNum === 10){
-      rowNum = 0;
-    }
+    rowNum++;
   });
 };
 
