@@ -42,6 +42,7 @@ class Gameboard {
     }
 
     this.checkEndGame()
+    return hit;
   }
 
   checkSunk(ship) {

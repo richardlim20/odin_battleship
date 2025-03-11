@@ -78,6 +78,21 @@ const createColumns = (boardName, boardShips) => {
           }
         });
       });
+
+      //Only allows clicks if gameboard is opponent
+      if (boardName === "opponent") {
+        column.addEventListener("click", (e) => {
+          const coordinates = JSON.parse(e.target.dataset.coordinate);
+          const isHit = opponentGameboard.receiveAttack(coordinates);
+
+          if (isHit) {
+            e.target.textContent = "hit";
+          } else {
+            e.target.textContent = "miss";
+          }
+        });
+      }
+
       row.appendChild(column);
     }
     rowNum++;
