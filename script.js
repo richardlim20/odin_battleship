@@ -34,8 +34,8 @@ const createBoards = () => {
   appendBoards();
   createRows(playerBoard, "player");
   createRows(opponentBoard, "opponent");
-  createColumns("player", playerShips);
-  createColumns("opponent", opponentShips);
+  createColumns(player, "player",);
+  createColumns(opponent, "opponent",);
 };
 
 const createRows = (board, boardName) => {
@@ -46,9 +46,9 @@ const createRows = (board, boardName) => {
   }
 };
 
-const createColumns = (boardName, boardShips) => {
+const createColumns = (playerType, boardName) => {
   const rows = document.querySelectorAll(`.${boardName}`);
-  const boardState = generateBoardState(boardShips);
+  const boardState = playerType.generateBoardState();
   let index = 0;
 
   rows.forEach((row) => {
@@ -83,29 +83,6 @@ const appendBoards = () => {
   opponnentContainer.textContent = "Opponent Board";
   playerContainer.appendChild(playerBoard);
   opponnentContainer.appendChild(opponentBoard);
-};
-
-//Sets if coordinate is ship or not in a new array
-const generateBoardState = (boardShips) => {
-  const boardState = [];
-
-  for (let rowNum = 0; rowNum < 10; rowNum++) {
-    for (let colNum = 0; colNum < 10; colNum++) {
-      const coordinate = [rowNum, colNum];
-      const isShip = boardShips.some((ship) =>
-        ship.coordinates.some(
-          (coord) => coord[0] === rowNum && coord[1] === colNum
-        )
-      );
-
-      boardState.push({
-        coordinate,
-        isShip,
-      });
-    }
-  }
-
-  return boardState;
 };
 
 createBoards();
