@@ -16,54 +16,7 @@ gamesContainer.appendChild(opponnentContainer);
 const gamesEnd = document.getElementById("game-end");
 const restartGameBtn = document.getElementById("restart-button");
 
-//Player object
-let player = new Player(false);
-let playerGameboard = player.gameboard;
-player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
-player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
-player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
-
-//Opponent Object
-let opponent = new Player(true);
-let opponentGameboard = opponent.gameboard;
-opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
-opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
-opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
-
-restartGameBtn.addEventListener("click", () => {
-  restartGame();
-});
-
-const startGame = () => {
-  createBoards();
-  runGame();
-};
-
-const restartGame = () => {
-  gamesEnd.textContent = "";
-
-  //Player object
-  player = new Player(false);
-  playerGameboard = player.gameboard;
-  player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
-  player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
-  player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
-
-  //Opponent Object
-  opponent = new Player(true);
-  opponentGameboard = opponent.gameboard;
-  opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
-  opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
-  opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
-
-  // Clear gameboard containers
-  playerBoard.innerHTML = "";
-  opponentBoard.innerHTML = "";
-
-  // Restart the game
-  startGame();
-};
-
+//DOM Functions
 const createBoards = () => {
   appendBoards();
   createRows(playerBoard, "player");
@@ -107,11 +60,69 @@ const createColumns = (playerType, boardName) => {
   });
 };
 
+const appendBoards = () => {
+  playerContainer.innerHTML = "";
+  playerContainer.textContent = "Player Board";
+  opponnentContainer.innerHTML = "";
+  opponnentContainer.textContent = "Opponent Board";
+  playerContainer.appendChild(playerBoard);
+  opponnentContainer.appendChild(opponentBoard);
+};
+
 //Shows hit or miss if cell contains ship
 const showHit = (gameboard, cell, cor) => {
   const isHit = gameboard.receiveAttack(cor);
   cell.textContent = isHit ? "hit" : "miss";
   gameboard.checkEndGame();
+};
+
+//Player object
+let player = new Player(false);
+let playerGameboard = player.gameboard;
+player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
+player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
+player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
+
+//Opponent Object
+let opponent = new Player(true);
+let opponentGameboard = opponent.gameboard;
+opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
+opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
+opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
+
+//Game Functions
+restartGameBtn.addEventListener("click", () => {
+  restartGame();
+});
+
+const startGame = () => {
+  createBoards();
+  runGame();
+};
+
+const restartGame = () => {
+  gamesEnd.textContent = "";
+
+  //Player object
+  player = new Player(false);
+  playerGameboard = player.gameboard;
+  player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
+  player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
+  player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
+
+  //Opponent Object
+  opponent = new Player(true);
+  opponentGameboard = opponent.gameboard;
+  opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
+  opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
+  opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
+
+  // Clear gameboard containers
+  playerBoard.innerHTML = "";
+  opponentBoard.innerHTML = "";
+
+  // Restart the game
+  startGame();
 };
 
 const runGame = () => {
@@ -175,15 +186,6 @@ const runGame = () => {
   };
 
   attackCPU();
-};
-
-const appendBoards = () => {
-  playerContainer.innerHTML = "";
-  playerContainer.textContent = "Player Board";
-  opponnentContainer.innerHTML = "";
-  opponnentContainer.textContent = "Opponent Board";
-  playerContainer.appendChild(playerBoard);
-  opponnentContainer.appendChild(opponentBoard);
 };
 
 startGame();
