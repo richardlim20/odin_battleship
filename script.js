@@ -60,42 +60,31 @@ const createRows = (board, boardName) => {
 
 const createColumns = (boardName, boardShips) => {
   const rows = document.querySelectorAll(`.${boardName}`);
-  let rowNum = 0;
+  const boardState = generateBoardState(boardShips);
+  let index = 0;
 
   rows.forEach((row) => {
     for (let i = 0; i < 10; i++) {
       const column = document.createElement("div");
       column.classList.add("column");
-      column.dataset.coordinate = JSON.stringify([rowNum, i]);
+      column.dataset.coordinate = JSON.stringify(boardState[index].coordinate);
 
-      boardShips.forEach((ship) => {
-        ship.coordinates.forEach((coordinate) => {
-          if (JSON.stringify(coordinate) === column.dataset.coordinate) {
-            //Shows own ships but not opponent ships
-            boardName === "opponent"
-              ? (column.textContent = "")
-              : (column.textContent = "ship");
-          }
-        });
-      });
+      if (boardState[index].isShip && boardName !== "opponent") {
+        column.textContent = "ship";
+      }
 
       //Only allows clicks if gameboard is opponent
       if (boardName === "opponent") {
         column.addEventListener("click", (e) => {
           const coordinates = JSON.parse(e.target.dataset.coordinate);
           const isHit = opponentGameboard.receiveAttack(coordinates);
-
-          if (isHit) {
-            e.target.textContent = "hit";
-          } else {
-            e.target.textContent = "miss";
-          }
+          e.target.textContent = isHit ? "hit" : "miss";
         });
       }
 
       row.appendChild(column);
+      index++;
     }
-    rowNum++;
   });
 };
 
@@ -106,6 +95,28 @@ const appendBoards = () => {
   opponnentContainer.textContent = "Opponent Board";
   playerContainer.appendChild(playerBoard);
   opponnentContainer.appendChild(opponentBoard);
+};
+
+
+//Sets if coordinate is ship or not in a new array
+const generateBoardState = (boardShips) => {
+  const boardState = [];
+
+  for (let rowNum = 0; rowNum < 10; rowNum++) {
+    for (let colNum = 0; colNum < 10; colNum++) {
+      const coordinate = [rowNum, colNum];
+      const isShip = boardShips.some((ship) =>
+        ship.coordinates.some((coord) => coord[0] === rowNum && coord[1] === colNum)
+      );
+
+      boardState.push({
+        coordinate,
+        isShip,
+      });
+    }
+  }
+
+  return boardState;
 };
 
 createBoards();
