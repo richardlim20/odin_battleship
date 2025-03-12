@@ -1,6 +1,7 @@
-import Gameboard from "./gameboard.js";
-import Ship from "./ship.js";
-
+// import Gameboard from "./gameboard.js";
+// import Ship from "./ship.js";
+const Ship = require('./ship');
+const Gameboard = require('./gameboard');
 class Player {
   constructor() {
     this.gameboard = new Gameboard();
@@ -37,5 +38,5 @@ class Player {
   };
 }
 
-// module.exports = Player;
-export default Player;
+module.exports = Player;
+// export default Player;
