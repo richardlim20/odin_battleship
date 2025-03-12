@@ -29,6 +29,7 @@ const playerContainer = document.getElementById("player-container");
 const opponnentContainer = document.getElementById("opponent-container");
 gamesContainer.appendChild(playerContainer);
 gamesContainer.appendChild(opponnentContainer);
+const gamesEnd = document.getElementById("game-end");
 
 const createBoards = () => {
   appendBoards();
@@ -90,11 +91,16 @@ const runGame = () => {
       showHit(opponentGameboard, e.target, coordinates);
       e.target.removeEventListener("click", handleCellClick);
 
-      if (opponentGameboard.gameOver || playerGameboard.gameOver) {
+      if (opponentGameboard.loseGame || playerGameboard.loseGame) {
         // Remove the event listener if the game is over
         cells.forEach((cell) => {
           cell.removeEventListener("click", handleCellClick);
         });
+        if (playerGameboard.loseGame) {
+          gamesEnd.textContent = "CPU Wins"
+        } else if (opponentGameboard.loseGame) {
+          gamesEnd.textContent = "Player Wins"
+        }
       } else {
         attackPlayer();
       }

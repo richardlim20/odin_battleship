@@ -2,7 +2,7 @@ class Gameboard {
   constructor() {
     this.ships = [];
     this.numOfMisses = 0;
-    this.gameOver = false;
+    this.loseGame = false;
   }
 
   //Methods
@@ -40,7 +40,7 @@ class Gameboard {
     if (!hit) {
       this.miss();
     }
-    
+
     return hit;
   }
 
@@ -49,8 +49,8 @@ class Gameboard {
   }
 
   checkEndGame() {
-    this.gameOver = this.ships.every(ship => ship.shipObject.isSunk());
-    return this.gameOver
+    this.loseGame = this.ships.every(ship => ship.shipObject.isSunk());
+    return this.loseGame
   }
 }
 

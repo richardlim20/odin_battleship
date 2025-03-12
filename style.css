@@ -24,3 +24,8 @@ h1 {
 #games-container > div {
   text-align: center;
 }
+
+#game-end {
+  text-align: center;
+  margin: 2rem 0rem;
+}
