@@ -1,21 +1,5 @@
 import Player from "./player.js";
 
-//Player object
-let player = new Player(false);
-const playerGameboard = player.gameboard;
-const playerShips = player.gameboard.ships;
-player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
-player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
-player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
-
-//Opponent Object
-let opponent = new Player(true);
-const opponentGameboard = opponent.gameboard;
-const opponentShips = opponent.gameboard.ships;
-opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
-opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
-opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
-
 const gamesContainer = document.getElementById("games-container");
 const playerBoard = document.createElement("div");
 playerBoard.classList.add("gameboard");
@@ -30,6 +14,55 @@ const opponnentContainer = document.getElementById("opponent-container");
 gamesContainer.appendChild(playerContainer);
 gamesContainer.appendChild(opponnentContainer);
 const gamesEnd = document.getElementById("game-end");
+const restartGameBtn = document.getElementById("restart-button");
+
+//Player object
+let player = new Player(false);
+let playerGameboard = player.gameboard;
+player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
+player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
+player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
+
+//Opponent Object
+let opponent = new Player(true);
+let opponentGameboard = opponent.gameboard;
+opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
+opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
+opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
+
+restartGameBtn.addEventListener("click", () => {
+  restartGame();
+});
+
+const startGame = () => {
+  createBoards();
+  runGame();
+};
+
+const restartGame = () => {
+  gamesEnd.textContent = "";
+
+  //Player object
+  player = new Player(false);
+  playerGameboard = player.gameboard;
+  player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
+  player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
+  player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
+
+  //Opponent Object
+  opponent = new Player(true);
+  opponentGameboard = opponent.gameboard;
+  opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
+  opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
+  opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
+
+  // Clear gameboard containers
+  playerBoard.innerHTML = "";
+  opponentBoard.innerHTML = "";
+
+  // Restart the game
+  startGame();
+};
 
 const createBoards = () => {
   appendBoards();
@@ -97,9 +130,9 @@ const runGame = () => {
           cell.removeEventListener("click", handleCellClick);
         });
         if (playerGameboard.loseGame) {
-          gamesEnd.textContent = "CPU Wins"
+          gamesEnd.textContent = "CPU Wins";
         } else if (opponentGameboard.loseGame) {
-          gamesEnd.textContent = "Player Wins"
+          gamesEnd.textContent = "Player Wins";
         }
       } else {
         attackPlayer();
@@ -153,5 +186,4 @@ const appendBoards = () => {
   opponnentContainer.appendChild(opponentBoard);
 };
 
-createBoards();
-runGame();
+startGame();

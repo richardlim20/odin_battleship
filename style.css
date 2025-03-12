@@ -25,7 +25,10 @@ h1 {
   text-align: center;
 }
 
-#game-end {
+#game-end-container {
   text-align: center;
   margin: 2rem 0rem;
+}
+#game-end {
+  margin-bottom: 1rem;
 }
