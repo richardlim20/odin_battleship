@@ -88,6 +88,7 @@ const runGame = () => {
     const handleCellClick = (e) => {
       const coordinates = JSON.parse(e.target.dataset.coordinate);
       showHit(opponentGameboard, e.target, coordinates);
+      e.target.removeEventListener("click", handleCellClick);
 
       if (opponentGameboard.gameOver || playerGameboard.gameOver) {
         // Remove the event listener if the game is over
