@@ -1,32 +1,20 @@
-import Gameboard from "./gameboard.js";
-import Ship from "./ship.js";
-
-let carrier = new Ship(5);
-let battleship = new Ship(4);
-let cruiser = new Ship(3);
-let submarine = new Ship(3);
-let destroyer = new Ship(2);
-class Player {
-  constructor() {
-    this.gameboard = new Gameboard();
-  }
-}
+import Player from "./player.js";
 
 //Player object
 let player = new Player();
 const playerGameboard = player.gameboard;
 const playerShips = player.gameboard.ships;
-player.gameboard.placeShip(carrier, "horizontal", [0, 0]);
-player.gameboard.placeShip(battleship, "vertical", [9, 5]);
-player.gameboard.placeShip(cruiser, "horizontal", [1, 2]);
+player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
+player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
+player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
 
 //Opponent Object
 let opponent = new Player();
 const opponentGameboard = opponent.gameboard;
 const opponentShips = opponent.gameboard.ships;
-opponent.gameboard.placeShip(carrier, "horizontal", [0, 0]);
-opponent.gameboard.placeShip(battleship, "vertical", [9, 5]);
-opponent.gameboard.placeShip(cruiser, "horizontal", [1, 2]);
+opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
+opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
+opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
 
 const gamesContainer = document.getElementById("games-container");
 const playerBoard = document.createElement("div");
@@ -97,7 +85,6 @@ const appendBoards = () => {
   opponnentContainer.appendChild(opponentBoard);
 };
 
-
 //Sets if coordinate is ship or not in a new array
 const generateBoardState = (boardShips) => {
   const boardState = [];
@@ -106,7 +93,9 @@ const generateBoardState = (boardShips) => {
     for (let colNum = 0; colNum < 10; colNum++) {
       const coordinate = [rowNum, colNum];
       const isShip = boardShips.some((ship) =>
-        ship.coordinates.some((coord) => coord[0] === rowNum && coord[1] === colNum)
+        ship.coordinates.some(
+          (coord) => coord[0] === rowNum && coord[1] === colNum
+        )
       );
 
       boardState.push({
