@@ -13,15 +13,31 @@ class Gameboard {
   placeShip(shipObject, direction, startCoordinate) {
     const length = shipObject.length;
     let coordinates = [];
-  
+    let xCor = startCoordinate[0];
+    let yCor = startCoordinate[1];
+
     for (let i = 0; i < length; i++) {
-      if (direction === 'horizontal') {
-        coordinates.push([startCoordinate[0] + i, startCoordinate[1]]);
-      } else if (direction === 'vertical') {
-        coordinates.push([startCoordinate[0], startCoordinate[1] + i]);
+      if (direction === "horizontal") {
+        let newX = startCoordinate[0] + i;
+
+        // If out of bounds move backwards
+        if (newX > 9) {
+          newX = startCoordinate[0] - (i - (9 - startCoordinate[0]));
+        }
+
+        coordinates.push([newX, yCor]);
+      } else if (direction === "vertical") {
+        let newY = startCoordinate[1] + i;
+
+        // If out of bounds move backwards
+        if (newY > 9) {
+          newY = startCoordinate[1] - (i - (9 - startCoordinate[1]));
+        }
+
+        coordinates.push([xCor, newY]);
       }
     }
-  
+
     const shipPlacement = { shipObject, direction, coordinates };
     this.ships.push(shipPlacement);
     return shipPlacement;
@@ -31,10 +47,14 @@ class Gameboard {
     let hit = false;
     this.ships.forEach((ship) => {
       //Convert to string because JS cannot compare objects
-      if (ship.coordinates.some(coord => coord[0] === coordinates[0] && coord[1] === coordinates[1])) {
+      if (
+        ship.coordinates.some(
+          (coord) => coord[0] === coordinates[0] && coord[1] === coordinates[1]
+        )
+      ) {
         ship.shipObject.hit();
         hit = true;
-      }  
+      }
     });
 
     if (!hit) {
@@ -49,8 +69,8 @@ class Gameboard {
   }
 
   checkEndGame() {
-    this.loseGame = this.ships.every(ship => ship.shipObject.isSunk());
-    return this.loseGame
+    this.loseGame = this.ships.every((ship) => ship.shipObject.isSunk());
+    return this.loseGame;
   }
 }
 
