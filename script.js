@@ -105,19 +105,34 @@ const runGame = () => {
     });
   };
 
+  const attackedCoordinates = [];
   const attackPlayer = () => {
     const cells = document.querySelectorAll(".player-cell");
-    const cor = opponent.generateCoordinate();
-    //Convert nodelist to array
-    Array.from(cells).some((cell) => {
-      if (cell.dataset.coordinate === JSON.stringify(cor)) {
-        showHit(playerGameboard, cell, cor);
-        //Stops iteration when match is found
+    const generatedCor = opponent.generateCoordinate();
+    const existingCoordinate = attackedCoordinates.some((cor) => {
+      if (JSON.stringify(cor) === JSON.stringify(generatedCor)) {
         return true;
       } else {
         return false;
       }
     });
+    //If coordinate exists rerun the function
+    if (existingCoordinate) {
+      attackPlayer();
+    } else {
+      //Pushes coordinate into previously attacked coordinates
+      attackedCoordinates.push(generatedCor);
+      //Convert nodelist to array
+      Array.from(cells).some((cell) => {
+        if (cell.dataset.coordinate === JSON.stringify(generatedCor)) {
+          showHit(playerGameboard, cell, generatedCor);
+          //Stops iteration when match is found
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
   };
 
   attackCPU();
