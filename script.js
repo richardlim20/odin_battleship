@@ -1,7 +1,7 @@
 import Player from "./player.js";
 
 //Player object
-let player = new Player();
+let player = new Player(false);
 const playerGameboard = player.gameboard;
 const playerShips = player.gameboard.ships;
 player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
@@ -9,7 +9,7 @@ player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
 player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
 
 //Opponent Object
-let opponent = new Player();
+let opponent = new Player(true);
 const opponentGameboard = opponent.gameboard;
 const opponentShips = opponent.gameboard.ships;
 opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
@@ -34,8 +34,8 @@ const createBoards = () => {
   appendBoards();
   createRows(playerBoard, "player");
   createRows(opponentBoard, "opponent");
-  createColumns(player, "player",);
-  createColumns(opponent, "opponent",);
+  createColumns(player, "player");
+  createColumns(opponent, "opponent");
 };
 
 const createRows = (board, boardName) => {
@@ -60,20 +60,49 @@ const createColumns = (playerType, boardName) => {
       if (boardState[index].isShip && boardName !== "opponent") {
         column.textContent = "ship";
       }
-
-      //Only allows clicks if gameboard is opponent
+      if (boardName === "player") {
+        column.classList.add("player-cell");
+      }
       if (boardName === "opponent") {
-        column.addEventListener("click", (e) => {
-          const coordinates = JSON.parse(e.target.dataset.coordinate);
-          const isHit = opponentGameboard.receiveAttack(coordinates);
-          e.target.textContent = isHit ? "hit" : "miss";
-        });
+        column.classList.add("opponent-cell");
       }
 
       row.appendChild(column);
       index++;
     }
   });
+};
+
+//Event listener for attacking opponent
+const attackCPU = () => {
+  const cells = document.querySelectorAll(".opponent-cell");
+  cells.forEach((cell) => {
+    cell.addEventListener("click", (e) => {
+      const coordinates = JSON.parse(e.target.dataset.coordinate);
+      showHit(opponentGameboard, e.target, coordinates);
+    });
+  });
+};
+
+const attackPlayer = () => {
+  const cells = document.querySelectorAll(".player-cell");
+  const cor = opponent.generateCoordinate();
+  //Convert nodelist to array
+  Array.from(cells).some((cell) => {
+    if (cell.dataset.coordinate === JSON.stringify(cor)) {
+      showHit(playerGameboard, cell, cor);
+      //Stops iteration when match is found
+      return true;
+    } else {
+      return false;
+    }
+  });
+};
+
+//Shows hit or miss if cell contains ship
+const showHit = (gameboard, cell, cor) => {
+  const isHit = gameboard.receiveAttack(cor);
+  cell.textContent = isHit ? "hit" : "miss";
 };
 
 const appendBoards = () => {
@@ -86,3 +115,5 @@ const appendBoards = () => {
 };
 
 createBoards();
+attackCPU();
+attackPlayer();

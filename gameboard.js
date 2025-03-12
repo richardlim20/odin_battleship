@@ -40,8 +40,7 @@ class Gameboard {
     if (!hit) {
       this.miss();
     }
-
-    this.checkEndGame()
+    
     return hit;
   }
 
@@ -51,8 +50,9 @@ class Gameboard {
 
   checkEndGame() {
     this.gameOver = this.ships.every(ship => ship.shipObject.isSunk());
+    return this.gameOver
   }
 }
 
-module.exports = Gameboard;
-// export default Gameboard;
+// module.exports = Gameboard;
+export default Gameboard;

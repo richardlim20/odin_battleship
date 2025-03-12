@@ -1,9 +1,10 @@
-// import Gameboard from "./gameboard.js";
-// import Ship from "./ship.js";
-const Ship = require('./ship');
-const Gameboard = require('./gameboard');
+import Gameboard from "./gameboard.js";
+import Ship from "./ship.js";
+// const Ship = require('./ship');
+// const Gameboard = require('./gameboard');
 class Player {
-  constructor() {
+  constructor(typeCPU) {
+    this.typeCPU = typeCPU;
     this.gameboard = new Gameboard();
     this.ships = {
       carrier: new Ship(5),
@@ -36,7 +37,13 @@ class Player {
 
     return boardState;
   };
+
+  generateCoordinate = () => {
+    const xValue = Math.floor(Math.random() * 10);
+    const yValue = Math.floor(Math.random() * 10);
+    return [xValue, yValue]
+  }
 }
 
-module.exports = Player;
-// export default Player;
+// module.exports = Player;
+export default Player;
