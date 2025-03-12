@@ -73,36 +73,53 @@ const createColumns = (playerType, boardName) => {
   });
 };
 
-//Event listener for attacking opponent
-const attackCPU = () => {
-  const cells = document.querySelectorAll(".opponent-cell");
-  cells.forEach((cell) => {
-    cell.addEventListener("click", (e) => {
-      const coordinates = JSON.parse(e.target.dataset.coordinate);
-      showHit(opponentGameboard, e.target, coordinates);
-    });
-  });
-};
-
-const attackPlayer = () => {
-  const cells = document.querySelectorAll(".player-cell");
-  const cor = opponent.generateCoordinate();
-  //Convert nodelist to array
-  Array.from(cells).some((cell) => {
-    if (cell.dataset.coordinate === JSON.stringify(cor)) {
-      showHit(playerGameboard, cell, cor);
-      //Stops iteration when match is found
-      return true;
-    } else {
-      return false;
-    }
-  });
-};
-
 //Shows hit or miss if cell contains ship
 const showHit = (gameboard, cell, cor) => {
   const isHit = gameboard.receiveAttack(cor);
   cell.textContent = isHit ? "hit" : "miss";
+  gameboard.checkEndGame();
+};
+
+const runGame = () => {
+  //Event listener for attacking opponent
+  const attackCPU = () => {
+    const cells = document.querySelectorAll(".opponent-cell");
+
+    const handleCellClick = (e) => {
+      const coordinates = JSON.parse(e.target.dataset.coordinate);
+      showHit(opponentGameboard, e.target, coordinates);
+
+      if (opponentGameboard.gameOver || playerGameboard.gameOver) {
+        // Remove the event listener if the game is over
+        cells.forEach((cell) => {
+          cell.removeEventListener("click", handleCellClick);
+        });
+      } else {
+        attackPlayer();
+      }
+    };
+
+    cells.forEach((cell) => {
+      cell.addEventListener("click", handleCellClick);
+    });
+  };
+
+  const attackPlayer = () => {
+    const cells = document.querySelectorAll(".player-cell");
+    const cor = opponent.generateCoordinate();
+    //Convert nodelist to array
+    Array.from(cells).some((cell) => {
+      if (cell.dataset.coordinate === JSON.stringify(cor)) {
+        showHit(playerGameboard, cell, cor);
+        //Stops iteration when match is found
+        return true;
+      } else {
+        return false;
+      }
+    });
+  };
+
+  attackCPU();
 };
 
 const appendBoards = () => {
@@ -115,5 +132,4 @@ const appendBoards = () => {
 };
 
 createBoards();
-attackCPU();
-attackPlayer();
+runGame();
