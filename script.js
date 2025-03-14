@@ -76,19 +76,14 @@ const showHit = (gameboard, cell, cor) => {
   gameboard.checkEndGame();
 };
 
-//Player object
-let player = new Player(false);
-let playerGameboard = player.gameboard;
-player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
-player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
-player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
+const placeShips = (playerType) => {
+  playerType.placeRandomShips(playerType.ships.carrier);
+  playerType.placeRandomShips(playerType.ships.battleship);
+  playerType.placeRandomShips(playerType.ships.cruiser);
+  playerType.placeRandomShips(playerType.ships.submarine);
+  playerType.placeRandomShips(playerType.ships.destroyer);
+};
 
-//Opponent Object
-let opponent = new Player(true);
-let opponentGameboard = opponent.gameboard;
-opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
-opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
-opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
 
 //Game Functions
 restartGameBtn.addEventListener("click", () => {
@@ -106,16 +101,12 @@ const restartGame = () => {
   //Player object
   player = new Player(false);
   playerGameboard = player.gameboard;
-  player.gameboard.placeShip(player.ships.carrier, "horizontal", [0, 0]);
-  player.gameboard.placeShip(player.ships.battleship, "vertical", [9, 5]);
-  player.gameboard.placeShip(player.ships.cruiser, "horizontal", [1, 2]);
+  placeShips(player);
 
   //Opponent Object
   opponent = new Player(true);
   opponentGameboard = opponent.gameboard;
-  opponent.gameboard.placeShip(opponent.ships.carrier, "horizontal", [0, 0]);
-  opponent.gameboard.placeShip(opponent.ships.battleship, "vertical", [9, 5]);
-  opponent.gameboard.placeShip(opponent.ships.cruiser, "horizontal", [1, 2]);
+  placeShips(opponent);
 
   // Clear gameboard containers
   playerBoard.innerHTML = "";
@@ -187,5 +178,15 @@ const runGame = () => {
 
   attackCPU();
 };
+
+//Player object
+let player = new Player(false);
+let playerGameboard = player.gameboard;
+placeShips(player);
+
+//Opponent Object
+let opponent = new Player(true);
+let opponentGameboard = opponent.gameboard;
+placeShips(opponent);
 
 startGame();
