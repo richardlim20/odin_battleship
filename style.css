@@ -10,6 +10,17 @@ h1 {
   grid-template-columns: 1fr repeat(9, 1fr);
 }
 
+.opponent-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.player-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .row {
   height: 50px;
   width: 50px;
