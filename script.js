@@ -72,7 +72,7 @@ const appendBoards = () => {
 //Shows hit or miss if cell contains ship
 const showHit = (gameboard, cell, cor) => {
   const isHit = gameboard.receiveAttack(cor);
-  cell.textContent = isHit ? "hit" : "miss";
+  cell.textContent = isHit ? "💥" : "💦";
   gameboard.checkEndGame();
 };
 
