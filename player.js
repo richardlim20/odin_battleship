@@ -7,11 +7,11 @@ class Player {
     this.typeCPU = typeCPU;
     this.gameboard = new Gameboard();
     this.ships = {
-      carrier: new Ship(5),
-      battleship: new Ship(4),
-      cruiser: new Ship(3),
-      submarine: new Ship(3),
-      destroyer: new Ship(2),
+      carrier: new Ship("carrier", 5),
+      battleship: new Ship("battleship", 4),
+      cruiser: new Ship("cruiser", 3),
+      submarine: new Ship("submarine", 3),
+      destroyer: new Ship("destroyer", 2),
     };
   }
 
@@ -22,19 +22,28 @@ class Player {
     for (let rowNum = 0; rowNum < 10; rowNum++) {
       for (let colNum = 0; colNum < 10; colNum++) {
         const coordinate = [rowNum, colNum];
-        const isShip = this.gameboard.ships.some((ship) =>
-          ship.coordinates.some(
-            (coord) => coord[0] === rowNum && coord[1] === colNum
-          )
-        );
 
+        let isShip = false;
+        let shipType = null;
+
+        this.gameboard.ships.forEach((ship) => {
+          const match = ship.coordinates.some(
+            (coord) => coord[0] === rowNum && coord[1] === colNum
+          );
+  
+          if (match) {
+            isShip = true;
+            shipType = ship.shipObject.type;
+          }
+        });
+  
         boardState.push({
           coordinate,
           isShip,
+          shipType,
         });
       }
     }
-
     return boardState;
   };
 
