@@ -5,9 +5,10 @@
 h1 {
   text-align: center;
 }
-.gameboard{
+.gameboard {
   display: grid;
   grid-template-columns: 1fr repeat(9, 1fr);
+  background-color: skyblue;
 }
 
 .opponent-cell {
@@ -42,4 +43,20 @@ h1 {
 }
 #game-end {
   margin-bottom: 1rem;
+}
+
+.ship-carrier {
+  background-color: navy;
+}
+.ship-battleship {
+  background-color: steelblue;
+}
+.ship-cruiser {
+  background-color: darkgreen;
+}
+.ship-submarine {
+  background-color: purple;
+}
+.ship-destroyer {
+  background-color: brown;
 }

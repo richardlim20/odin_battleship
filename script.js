@@ -45,7 +45,7 @@ const createColumns = (playerType, boardName) => {
       column.dataset.coordinate = JSON.stringify(boardState[index].coordinate);
 
       if (boardState[index].isShip && boardName !== "opponent") {
-        column.textContent = "ship";
+        column.classList.add(`ship-${boardState[index].shipType}`)
       }
       if (boardName === "player") {
         column.classList.add("player-cell");
